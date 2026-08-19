@@ -6,16 +6,24 @@ import EmergencyPage from './pages/EmergencyPage'
 import ReportPage from './pages/ReportPage'
 import ProfilePage from './pages/ProfilePage'
 import AudioDetector from './components/AudioDetector'
+import SOSModal from './components/SOSModal'
+import SOSPushNotificationBanner from './components/SOSPushNotificationBanner'
 import { useApp } from './context/AppContext'
 
 function App() {
-  const { emergencyMode, audioDetectionEnabled } = useApp()
+  const { emergencyMode, audioDetectionEnabled, showSosModal, setShowSosModal } = useApp()
 
   return (
     <BrowserRouter>
       <div className={`app-container ${emergencyMode ? 'emergency-mode-active' : ''}`}>
-        {/* Global Scream / Loud Sound Detector active across ALL pages (Home, Map, Report, Emergency, Profile) */}
+        {/* Global Scream / Loud Sound Detector active across ALL pages */}
         {audioDetectionEnabled && <AudioDetector hidden={true} />}
+
+        {/* Global Incoming SOS Push Alert Banner for Nearby Users (<100m) */}
+        <SOSPushNotificationBanner />
+
+        {/* Global SOS Modal Popup */}
+        {showSosModal && <SOSModal onClose={() => setShowSosModal(false)} />}
 
         <div className="page-content">
           <Routes>

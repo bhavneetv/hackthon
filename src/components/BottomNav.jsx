@@ -1,8 +1,11 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Map, ShieldAlert, AlertTriangle, Settings, Shield } from 'lucide-react'
+import { Home, Map, ShieldAlert, AlertTriangle, Settings, Shield, User, Phone } from 'lucide-react'
+import { useApp } from '../context/AppContext'
 import './BottomNav.css'
 
 export default function BottomNav() {
+  const { userName, userPhone, sosActive, triggerSOS } = useApp()
+
   return (
     <>
       {/* Mobile Bottom Navigation (< 768px) */}
@@ -44,6 +47,21 @@ export default function BottomNav() {
           </div>
         </div>
 
+        {/* User Quick Profile Info */}
+        <div className="sidebar-user-card">
+          <div className="flex-row gap-2 align-center">
+            <div className="sidebar-user-avatar">
+              <User size={18} />
+            </div>
+            <div>
+              <div className="sidebar-user-name">{userName || 'Safe User'}</div>
+              <div className="sidebar-user-phone">
+                <Phone size={11} /> {userPhone || '+91 98765 43210'}
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="sidebar-nav-links">
           <NavLink to="/" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
             <Home size={20} />
@@ -52,7 +70,7 @@ export default function BottomNav() {
 
           <NavLink to="/map" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
             <Map size={20} />
-            <span>Safe Map & AI Routes</span>
+            <span>Safe Map &amp; AI Routes</span>
           </NavLink>
 
           <NavLink to="/report" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
@@ -62,15 +80,15 @@ export default function BottomNav() {
 
           <NavLink to="/profile" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
             <Settings size={20} />
-            <span>Settings & Contacts</span>
+            <span>Settings &amp; Profile</span>
           </NavLink>
         </div>
 
         <div className="sidebar-emergency-card">
-          <NavLink to="/emergency" className="sidebar-emergency-btn emergency-pulse">
+          <button className={`sidebar-emergency-btn ${sosActive ? 'active-sos-btn' : 'emergency-pulse'}`} onClick={() => triggerSOS()}>
             <ShieldAlert size={22} />
-            <span>EMERGENCY MODE</span>
-          </NavLink>
+            <span>{sosActive ? '🚨 SOS ACTIVE' : 'TRIGGER SOS'}</span>
+          </button>
         </div>
 
         <div className="sidebar-footer">

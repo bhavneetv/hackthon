@@ -178,6 +178,39 @@
     box-shadow: 0 12px 28px rgba(255, 71, 87, 0.5);
   }
 
+  .sidebar-user-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+  }
+
+  .sidebar-user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(108, 99, 255, 0.2);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-user-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .sidebar-user-phone {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
   .sidebar-footer {
     font-size: 11px;
     color: var(--text-muted);

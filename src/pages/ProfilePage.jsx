@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext'
 import { getHelplines } from '../services/aiService'
 import { reverseGeocode } from '../services/placesService'
 import AudioDetector from '../components/AudioDetector'
-import { Mic, Plus, Trash2, Shield, Bot, Users, Bell, MapPin, Volume2 } from 'lucide-react'
+import { Mic, Plus, Trash2, Shield, Bot, Users, Bell, MapPin, Volume2, User, Phone, Lock, VolumeX } from 'lucide-react'
 
 export default function ProfilePage() {
   const {
@@ -11,6 +11,11 @@ export default function ProfilePage() {
     audioDetectionEnabled, setAudioDetectionEnabled,
     audioThreshold, setAudioThreshold,
     crowdCount, setCrowdCount,
+    userName, setUserName,
+    userPhone, setUserPhone,
+    sosPin, setSosPin,
+    sirenEnabled, setSirenEnabled,
+    playSiren, stopSiren,
     userLocation
   } = useApp()
 
@@ -91,6 +96,50 @@ export default function ProfilePage() {
   return (
     <div className="profile-page">
       <h1 className="mb-4">Settings</h1>
+
+      {/* ===== MY PROFILE & SENDER PHONE NUMBER ===== */}
+      <div className="glass-card mb-4" style={{ borderColor: 'var(--primary)' }}>
+        <div className="flex-row gap-2 mb-3" style={{ alignItems: 'center' }}>
+          <User className="text-primary" size={20} />
+          <h3 style={{ margin: 0, fontSize: '16px' }}>My Profile &amp; Emergency Phone</h3>
+        </div>
+        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '12px' }}>
+          Your phone number will be included in SOS alerts so nearby responders and emergency contacts can call you back directly.
+        </p>
+
+        <div className="mb-3">
+          <label className="input-label" style={{ fontSize: '12px' }}>Your Full Name</label>
+          <input className="form-input" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="e.g. Priya Sharma" />
+        </div>
+
+        <div className="mb-3">
+          <label className="input-label" style={{ fontSize: '12px' }}>Your Mobile Phone Number</label>
+          <input className="form-input" type="tel" value={userPhone} onChange={(e) => setUserPhone(e.target.value)} placeholder="e.g. +91 98765 43210" />
+        </div>
+
+        <div>
+          <label className="input-label" style={{ fontSize: '12px' }}>SOS Cancellation PIN (4 Digits)</label>
+          <input className="form-input" maxLength={4} type="password" value={sosPin} onChange={(e) => setSosPin(e.target.value)} placeholder="e.g. 1234" />
+        </div>
+      </div>
+
+      {/* ===== AUDIO SIREN ALARM SETTINGS ===== */}
+      <div className="glass-card mb-4">
+        <div className="flex-row justify-between mb-2" style={{ alignItems: 'center' }}>
+          <div className="flex-row gap-2" style={{ alignItems: 'center' }}>
+            <Volume2 className="text-danger" size={20} />
+            <h3 style={{ margin: 0, fontSize: '16px' }}>Emergency Siren Alarm</h3>
+          </div>
+          <ToggleSwitch checked={sirenEnabled} onChange={setSirenEnabled} />
+        </div>
+        <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '10px' }}>
+          Automatically synthesizes a loud emergency siren sound when SOS is triggered or received nearby.
+        </p>
+        <div className="flex-row gap-2">
+          <button className="btn btn-glass" style={{ flex: 1, padding: '8px', fontSize: '12px' }} onClick={playSiren}>🔊 Test Siren</button>
+          <button className="btn btn-glass" style={{ flex: 1, padding: '8px', fontSize: '12px' }} onClick={stopSiren}>🔇 Stop Siren</button>
+        </div>
+      </div>
 
       {/* ===== VOICE DETECTION ===== */}
       <div className="glass-card mb-4">

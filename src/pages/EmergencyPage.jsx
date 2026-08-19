@@ -5,7 +5,7 @@ import { searchNearbyPlaces, haversineDistance } from '../services/placesService
 import AudioDetector from '../components/AudioDetector'
 
 export default function EmergencyPage() {
-  const { emergencyMode, toggleEmergency, trustedContacts, userLocation, audioDetectionEnabled } = useApp()
+  const { emergencyMode, toggleEmergency, trustedContacts, userLocation, audioDetectionEnabled, triggerSOS, cancelSOS } = useApp()
   const [nearestPolice, setNearestPolice] = useState(null)
   const [nearestHospital, setNearestHospital] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -53,6 +53,7 @@ export default function EmergencyPage() {
   }
 
   const handleCancel = () => {
+    cancelSOS()
     toggleEmergency(false)
     window.history.back()
   }
@@ -64,16 +65,25 @@ export default function EmergencyPage() {
         <h1 className="text-danger" style={{ textAlign: 'center', fontSize: '28px', textTransform: 'uppercase', letterSpacing: '2px' }}>
           <span style={{ animation: 'pulse 1s infinite', display: 'inline-block' }}>🚨</span> Emergency
         </h1>
-        <p style={{ textAlign: 'center', fontSize: '13px' }}>Mode Active · Tap to call immediately</p>
+        <p style={{ textAlign: 'center', fontSize: '13px' }}>Mode Active · Tap below to broadcast SOS &amp; SMS</p>
       </div>
+
+      {/* Broadcast SOS Trigger Button */}
+      <button
+        className="btn btn-danger btn-block emergency-pulse mb-4"
+        style={{ padding: '20px', fontSize: '18px', borderRadius: '18px', fontWeight: 800, background: 'linear-gradient(135deg, #FF4757, #C0392B)' }}
+        onClick={() => triggerSOS('112')}
+      >
+        🚨 TRIGGER SOS (SMS + PUSH &lt;100m)
+      </button>
 
       {/* Primary Call Buttons - BIG for panic situations */}
       <div className="flex-col gap-3 mb-4">
-        <button className="btn btn-danger btn-block emergency-pulse" style={{ padding: '22px', fontSize: '22px', borderRadius: '20px', fontWeight: 700 }} onClick={() => handleCall('112')}>
-          <Phone size={30} /> CALL POLICE (112)
+        <button className="btn btn-danger btn-block" style={{ padding: '18px', fontSize: '18px', borderRadius: '16px', fontWeight: 700 }} onClick={() => handleCall('112')}>
+          <Phone size={24} /> CALL POLICE (112)
         </button>
-        <button className="btn btn-block" style={{ background: '#FFA502', color: 'white', padding: '18px', fontSize: '18px', borderRadius: '16px', fontWeight: 600, border: 'none', cursor: 'pointer' }} onClick={() => handleCall('108')}>
-          <Phone size={26} /> CALL AMBULANCE (108)
+        <button className="btn btn-block" style={{ background: '#FFA502', color: 'white', padding: '16px', fontSize: '16px', borderRadius: '16px', fontWeight: 600, border: 'none', cursor: 'pointer' }} onClick={() => handleCall('108')}>
+          <Phone size={24} /> CALL AMBULANCE (108)
         </button>
       </div>
 
